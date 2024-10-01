@@ -143,7 +143,7 @@ InitToolkit
   sed -i "s/PYVER=.*/PYVER=$this_PackageVersion/" build.sh
   sed -i '12,22d' Android/bldlibrary.patch
   sed -i "s/choices=range(30, 40)/choices=range(21, 40)/" Android/util.py
-  sed -i "g/"https://ftp.gnu.org"/"http://ftp.nluug.nl/ftp"/" Android/build_deps.py 
+  sed -i 's/https:\/\/ftp.gnu.org/http:\/\/ftp.nluug.nl\/ftp/g' Android/build_deps.py 
   export ARCH=$this_TargetArch
   export ANDROID_API=$this_TargetAPI
   ./build.sh
