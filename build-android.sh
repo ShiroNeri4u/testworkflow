@@ -152,6 +152,10 @@ InitToolkit
   export ARCH=$this_TargetArch
   export ANDROID_API=$this_TargetAPI
   export PATH=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin:$PATH
+  export CC=clang
+  export CXX=clang++
+  export AS=llvm-as
+  export AR=llvm-ar
   ./build.sh
  }
 
