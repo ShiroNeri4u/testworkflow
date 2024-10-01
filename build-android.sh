@@ -116,7 +116,7 @@ InitToolkit
  @DefAttribute TargetAPI
  @DefMethod Clone
  @DefMethod Download
- @DefMethod Build
+ @DefMethod BuildEnv
 
  Package::Package () {
   this_PackageName=$1
@@ -134,7 +134,7 @@ InitToolkit
    wget $this_Link
   }
 
-  Package::Build () {
+  Package::BuildEnv () {
     pip3 install crossenv
     python3 -m crossenv build/usr/bin/python3 cross_venv
     cd cross_venv/cross/bin
@@ -143,11 +143,12 @@ InitToolkit
     python -m pip install --upgrade pip
     pip3 install Cython
     mkdir -p ../../../crosslib
-    wget https://github.com/LmeSzinc/AzurLaneAutoScript/blob/master/requirements.txt
+    wget https://raw.githubusercontent.com/LmeSzinc/AzurLaneAutoScript/refs/heads/master/requirements.txt
     pip3 wheel --wheel-dir ../../../crosslib -r requirements.txt
   }
 
 @DefClass Python : Package
+ @DefMethod Build
  Python::Python () {
   this.Package $@
  }
@@ -181,5 +182,5 @@ cd build
 #Build Python
 @New Python python Python 3.7.6 https://github.com/GRRedWings/python3-android arm64 21
 python.Clone && cd python3-android && python.Build
-@New Package Lib Libs 0 https://github.com/LmeSzinc/AzurLaneAutoScript/blob/master/requirements.txt arm64 21
-Lib.Build
+@New Package Lib Libs 0 https://raw.githubusercontent.com/LmeSzinc/AzurLaneAutoScript/refs/heads/master/requirements.txt arm64 21
+Lib.BuildEnv
