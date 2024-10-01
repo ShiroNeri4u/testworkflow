@@ -32,3 +32,6 @@ jobs:
         bash build-android.sh
       env:
         ANDROID_NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
+
+    - name: Setup Debug Session
+      uses: csexton/debugger-action@master
