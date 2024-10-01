@@ -13,6 +13,7 @@ jobs:
 
     - name: Set up Android NDK
       uses: nttld/setup-ndk@v1.5.0
+      id: setup-ndk
       with:
         ndk-version: 'r27'
         add-to-path: false
@@ -23,6 +24,6 @@ jobs:
     
     - name: Build
       run:
-        bash build-android.sh
+        tree
       env:
         ANDROID_NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
