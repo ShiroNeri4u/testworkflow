@@ -111,10 +111,44 @@ InitToolkit
 @DefClass Package
  @DefAttribute PackageName
  @DefAttribute PackageVersion
- @DefAttribute DownloadLink
+ @DefAttribute Link
+ @DefAttribute TargetArch
+ @DefAttribute TargetAPI
+ @DefMethod Clone
+ @DefMethod Download
 
- Package::Package (){
+ Package::Package () {
   this_PackageName=$1
   this_PackageVersion=$2
-  this_DownloadLink=$3
+  this_Link=$3
+  this_TargetArch=$4
+  this_TargetAPI=$5
  }
+
+  Package::Clone () {
+   git clone $this_Link
+  }
+
+  Package::Download () {
+   wget $this_Link
+  }
+
+@DefClass Python : Package
+ Python::Python () {
+  this.Package $1 $2 $3
+ }
+
+ Python::Build () {
+  sed -i "s/PYVER=.*/PYVER=$this.Version/" build.sh
+  export ARCH=$this_TargetArch
+  export ANDROID_API=$this_TargetAPI
+  ./build.sh
+ }
+
+mkdir -p build
+cd build
+
+#Build Python
+@New Python Python 3.7.6 https://github.com/GRRedWings/python3-android arm64 21
+cd python3-android
+Python.Clone && Python.Build
