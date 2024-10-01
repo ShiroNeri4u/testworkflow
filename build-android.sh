@@ -152,10 +152,11 @@ InitToolkit
   export ARCH=$this_TargetArch
   export ANDROID_API=$this_TargetAPI
   export PATH=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin:$PATH
-  export CC=clang
-  export CXX=clang++
-  export AS=llvm-as
-  export AR=llvm-ar
+  export ANDROID_NDK_HOME=$ANDROID_NDK
+  export CC=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/aarch64-linux-android21-clang
+  export CXX=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/aarch64-linux-android21-clang++
+  export AS=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/llvm-as
+  export AR=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/llvm-ar
   ./build.sh
  }
 
