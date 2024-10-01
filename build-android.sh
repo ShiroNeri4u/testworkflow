@@ -107,6 +107,7 @@ function InitToolkit () {
 }
 
 InitToolkit
+BASICDIR=$PWD
 
 @DefClass Package
  @DefAttribute PackageName
@@ -135,25 +136,36 @@ InitToolkit
   }
 
   Package::BuildEnv () {
+    # SetUp Env
+    pip3 install crossenv
+    export ARCH=$this_TargetArch
+    export ANDROID_API=$this_TargetAPI
+    export PATH=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin:$PATH
+    export ANDROID_NDK_HOME=$ANDROID_NDK
+    export CC=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/${this_TargetArch}-linux-android21-clang
+    export CXX=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/${this_TargetArch}-linux-android21-clang++
+    export AS=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/llvm-as
+    export AR=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/llvm-ar
+    export STRIP=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/llvm-strip
+    export SYSROOT=$BASICDIR/python3-android/src/Python-3.7.6/Android/sysroot/usr
+    export CFLAG="-D__ANDROID_API__=$ANDROID_API -Os -fPIC -DANDROID "
+    export LDFLAG="-lc -lm -ldl -llog "
+    #Download ffmpeg
     wget https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz
     tar xvf ffmpeg-7.1.tar.xz
     cd ffmpeg-7.1
-    export CFLAG="-D__ANDROID_API__=$This_TargetAPI -Os -fPIC -DANDROID "
-    export LDFLAG="-lc -lm -ldl -llog "
-    export PREFIX=/home/runner/work/testworkflow/testworkflow/build/python3-android/src/Python-3.7.6/Android/sysroot/usr
-    ./configure --target-os=android --prefix=$PREFIX --enable-openssl --enable-cross-compile --sysroot=$PREFIX
-    #make -j8 && make install
+    ./configure --ignore-tests=TEST --target-os=android --prefix=$SYSROOT --enable-openssl --enable-cross-compile --sysroot=$SYSROOT --cc=$CC --cxx=$CXX --ar=$AR --as=$AS --arch=arm64
+    make -j8 && make install
+  
     cd ..
-    pip3 install crossenv
-    python3 -m crossenv build/usr/bin/python3 cross_venv
+    python3 -m crossenv $BASICDIR/python3-android/build/usr/bin/python3 cross_venv
     cd cross_venv/cross/bin
     source activate
     python3 -m ensurepip --upgrade
     python -m pip install --upgrade pip
     pip3 install Cython
-    mkdir -p ../../../crosslib
-    wget https://raw.githubusercontent.com/LmeSzinc/AzurLaneAutoScript/refs/heads/master/requirements.txt
-    pip3 wheel --wheel-dir ../../../crosslib -r requirements.txt
+    mkdir -p $BASICDIR/crosslib
+    pip3 wheel --wheel-dir $BASICDIR/crosslib -r requirements.txt
   }
 
 @DefClass Python : Package
@@ -163,6 +175,7 @@ InitToolkit
  }
 
  Python::Build () {
+  # Patch
   sed -i "s/PYVER=.*/PYVER=$this_PackageVersion/" build.sh
   sed -i '12,22d' Android/bldlibrary.patch
   sed -i "s/choices=range(30, 40)/choices=range(21, 40)/" Android/util.py
@@ -173,6 +186,7 @@ InitToolkit
   sed -i 's/gdbm-1.23/gdbm-1.24/' Android/build_deps.py
   sed -i 's/https:\/\/www.openssl.org\/source\/openssl-3.0.12.tar.gz/https:\/\/github.com\/openssl\/openssl\/releases\/download\/OpenSSL_1_1_1w\/openssl-1.1.1w.tar.gz/' Android/build_deps.py
   sed -i 's/3460000/3460100/' Android/build_deps.py
+  # SetUp Env
   export ARCH=$this_TargetArch
   export ANDROID_API=$this_TargetAPI
   export PATH=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin:$PATH
@@ -181,15 +195,16 @@ InitToolkit
   export CXX=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/aarch64-linux-android21-clang++
   export AS=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/llvm-as
   export AR=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/llvm-ar
+  # Build
   ./build.sh
  }
 
-pip3 install crossenv
-mkdir -p build
-cd build
-
 #Build Python
 @New Python python Python 3.7.6 https://github.com/GRRedWings/python3-android arm64 21
+
 python.Clone && cd python3-android && python.Build
-@New Package Lib Libs 0 https://raw.githubusercontent.com/LmeSzinc/AzurLaneAutoScript/refs/heads/master/requirements.txt arm64 21
-Lib.BuildEnv
+
+cd $BASICDIR
+
+@New Package Libs Libs 0 https://raw.githubusercontent.com/LmeSzinc/AzurLaneAutoScript/refs/heads/master/requirements.txt aarch64 21
+Libs.Download && Libs.BuildEnv
