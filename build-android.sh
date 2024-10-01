@@ -140,13 +140,13 @@ BASICDIR=$PWD
     pip3 install crossenv
     export ARCH=$this_TargetArch
     export ANDROID_API=$this_TargetAPI
-    export PATH=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin:$PATH
+    export PATH=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
     export ANDROID_NDK_HOME=$ANDROID_NDK
-    export CC=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/${this_TargetArch}-linux-android21-clang
-    export CXX=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/${this_TargetArch}-linux-android21-clang++
-    export AS=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/llvm-as
-    export AR=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/llvm-ar
-    export STRIP=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/llvm-strip
+    export CC=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/${this_TargetArch}-linux-android21-clang
+    export CXX=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/${this_TargetArch}-linux-android21-clang++
+    export AS=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-as
+    export AR=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar
+    export STRIP=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-strip
     export SYSROOT=$BASICDIR/python3-android/src/Python-3.7.6/Android/sysroot/usr
     export CFLAG="-D__ANDROID_API__=$ANDROID_API -Os -fPIC -DANDROID "
     export LDFLAG="-lc -lm -ldl -llog "
@@ -189,12 +189,12 @@ BASICDIR=$PWD
   # SetUp Env
   export ARCH=$this_TargetArch
   export ANDROID_API=$this_TargetAPI
-  export PATH=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin:$PATH
+  export PATH=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
   export ANDROID_NDK_HOME=$ANDROID_NDK
-  export CC=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/aarch64-linux-android21-clang
-  export CXX=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/aarch64-linux-android21-clang++
-  export AS=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/llvm-as
-  export AR=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin/llvm-ar
+  export CC=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang
+  export CXX=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang++
+  export AS=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-as
+  export AR=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar
   # Build
   ./build.sh
  }
