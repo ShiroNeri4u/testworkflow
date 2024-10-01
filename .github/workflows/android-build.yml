@@ -8,9 +8,10 @@ jobs:
     runs-on: ubuntu-latest
  
     steps:
+    - name: Checkout repository
     - uses: actions/checkout@v2
 
     - name: Set up Android NDK
-      uses: android-actions/ndk-install@v2
+      uses: nttld/setup-ndk@v1.5.0
       with:
         ndkVersion: '21.3.6528147'
