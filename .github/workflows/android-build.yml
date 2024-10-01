@@ -29,7 +29,6 @@ jobs:
 
     - name: Build
       run:
-        sudo pip3 install meson==1.5.2
-        source build-android.sh
+        sudo pip3 install meson==1.5.2 && source build-android.sh
       env:
         ANDROID_NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
