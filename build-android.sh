@@ -141,7 +141,7 @@ InitToolkit
     export CFLAG="-D__ANDROID_API__=$This_TargetAPI -Os -fPIC -DANDROID "
     export LDFLAG="-lc -lm -ldl -llog "
     export PREFIX=/home/runner/work/testworkflow/testworkflow/build/python3-android/src/Python-3.7.6/Android/sysroot/usr
-    ./configure --target-os=android --prefix=$PREFIX --enable-openssl
+    ./configure --target-os=android --prefix=$PREFIX --enable-openssl --enable-cross-compile --sysroot=/home/runner/work/testworkflow/testworkflow/build/python3-android/src/Python-3.7.6/Anroid/sysroot/usr
     make -j8 && make install
     cd ..
     pip3 install crossenv
