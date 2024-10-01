@@ -154,9 +154,9 @@ BASICDIR=$PWD
     wget https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz
     tar xvf ffmpeg-7.1.tar.xz
     cd ffmpeg-7.1
-    ./configure --enable-small --disable-shared --enable-static --enable-pthreads --ignore-tests=TEST --target-os=android --prefix=$SYSROOT --enable-openssl --enable-cross-compile --sysroot=$SYSROOT --cc=$CC --cxx=$CXX --ar=$AR --as=$AS --arch=$ARCH
+    ./configure --enable-small --disable-shared --enable-static --enable-pthreads --ignore-tests=TEST --target-os=android --prefix=$SYSROOT --enable-openssl --enable-cross-compile --sysroot=$SYSROOT --cc=$CC --cxx=$CXX --ar=$AR --as=$AS --arch=$ARCH --extra-cflags="$CFLAG"
     make -j8 && make install
-    cat ffbuild/config.log
+    $CC -v
   
     cd ..
     python3 -m crossenv $BASICDIR/python3-android/build/usr/bin/python3 cross_venv
