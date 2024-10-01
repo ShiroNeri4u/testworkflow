@@ -214,7 +214,7 @@ python.Clone && cd python3-android && python.Build
 
 cd $BASICDIR
 
-@New FFmpeg ffmpeg FFmpeg 7.1 https://github.com/Javernaut/ffmpeg-android-maker/wiki/Available-script-arguments arm64 21
+@New FFmpeg ffmpeg FFmpeg 7.1 https://github.com/Javernaut/ffmpeg-android-maker arm64 21
 
 ffmpeg.Clone && cd ffmpeg-android-maker && ffmpeg.Build
 
