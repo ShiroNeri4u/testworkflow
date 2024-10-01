@@ -151,10 +151,10 @@ BASICDIR=$PWD
     export CFLAG="-D__ANDROID_API__=$ANDROID_API -Os -fPIC -DANDROID "
     export LDFLAG="-lc -lm -ldl -llog "
     #Download ffmpeg
-    wget https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz
-    tar xvf ffmpeg-7.1.tar.xz
-    ffmpeg-7.1/configure --enable-small --disable-shared --enable-static --enable-pthreads --ignore-tests=TEST --target-os=android --prefix=$SYSROOT --enable-openssl --enable-cross-compile --sysroot=$SYSROOT --cc=$CC --cxx=$CXX --ar=$AR --as=$AS --arch=$ARCH --extra-cflags="$CFLAG"
-    make -j8 && make install
+    #wget https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz
+    #tar xvf ffmpeg-7.1.tar.xz
+    #ffmpeg-7.1/configure --enable-small --disable-shared --enable-static --enable-pthreads --ignore-tests=TEST --target-os=android --prefix=$SYSROOT --enable-openssl --enable-cross-compile --sysroot=$SYSROOT --cc=$CC --cxx=$CXX --ar=$AR --as=$AS --arch=$ARCH --extra-cflags="$CFLAG"
+    #make -j8 && make install
   
     cd ..
     python3 -m crossenv $BASICDIR/python3-android/build/usr/bin/python3 cross_venv
@@ -198,12 +198,25 @@ BASICDIR=$PWD
   ./build.sh
  }
 
+@DefClass FFmpeg : Package
+ @Defind Build
+ FFmpeg::FFmpeg () {
+ this.package $@
+ }
+
+ FFmpeg::Build () {
+ ./ffmpeg-android-maker.sh -abis=$this_TargetArch --android-api-level=$This_TargetAPI --binutils llvm
+ }
 #Build Python
 @New Python python Python 3.7.6 https://github.com/GRRedWings/python3-android arm64 21
 
 python.Clone && cd python3-android && python.Build
 
 cd $BASICDIR
+
+@New FFmpeg ffmpeg FFmpeg 7.1 https://github.com/Javernaut/ffmpeg-android-maker/wiki/Available-script-arguments arm64 21
+
+ffmpeg.Clone && cd ffmpeg-android-maker && ffmpeg.Build
 
 @New Package Libs Libs 0 https://raw.githubusercontent.com/LmeSzinc/AzurLaneAutoScript/refs/heads/master/requirements.txt aarch64 21
 Libs.Download && Libs.BuildEnv
