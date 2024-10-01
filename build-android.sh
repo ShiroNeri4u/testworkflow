@@ -199,7 +199,7 @@ BASICDIR=$PWD
  }
 
 @DefClass FFmpeg : Package
- @Defind Build
+ @DefMethod Build
  FFmpeg::FFmpeg () {
  this.package $@
  }
