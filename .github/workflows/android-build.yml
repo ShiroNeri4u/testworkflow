@@ -22,6 +22,11 @@ jobs:
       run:
         sudo apt update && sudo apt install -y build-essential
     
+    - name: Setup Python
+      uses: actions/setup-python@v5.2.0
+      with:
+        python-version: 3.7.6
+
     - name: Build
       run:
         bash build-android.sh

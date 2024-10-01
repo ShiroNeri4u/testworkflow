@@ -149,6 +149,7 @@ InitToolkit
   sed -i 's/v3.4.4\/libffi-3.4.4/v3.4.6\/libffi-3.4.6/' Android/build_deps.py
   sed -i 's/gdbm-1.23/gdbm-1.24/' Android/build_deps.py
   sed -i 's/https:\/\/www.openssl.org\/source\/openssl-3.0.12.tar.gz/https:\/\/github.com\/openssl\/openssl\/releases\/download\/OpenSSL_1_1_1w\/openssl-1.1.1w.tar.gz/' Android/build_deps.py
+  sed -i 's/3460000/3460100/' Android/build_deps.py
   export ARCH=$this_TargetArch
   export ANDROID_API=$this_TargetAPI
   export PATH=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86-64/bin:$PATH
