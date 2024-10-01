@@ -29,6 +29,6 @@ jobs:
 
     - name: Build
       run:
-        bash build-android.sh
+        source build-android.sh
       env:
         ANDROID_NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
