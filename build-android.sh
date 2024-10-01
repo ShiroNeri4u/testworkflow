@@ -143,7 +143,12 @@ InitToolkit
   sed -i "s/PYVER=.*/PYVER=$this_PackageVersion/" build.sh
   sed -i '12,22d' Android/bldlibrary.patch
   sed -i "s/choices=range(30, 40)/choices=range(21, 40)/" Android/util.py
-  sed -i 's/https:\/\/ftp.gnu.org/http:\/\/ftp.nluug.nl\/ftp/g' Android/build_deps.py 
+  sed -i 's/https:\/\/ftp.gnu.org/http:\/\/ftp.nluug.nl\/ftp/g' Android/build_deps.py
+  sed -i 's/ncurses-6.4/ncurses-6.5/' Android/build_deps.py
+  sed -i 's/v2.39\/util-linux-2.39.2/v2.40\/util-linux-2.40.2/' Android/build_deps.py
+  sed -i 's/v3.4.4\/libffi-3.4.4/v3.4.6\/libffi-3.4.6/' Android/build_deps.py
+  sed -i 's/gdbm-1.23/gdbm-1.24/' Android/build_deps.py
+  sed -i 's/https:\/\/www.openssl.org\/source\/openssl-3.0.12.tar.gz/https:\/\/github.com\/openssl\/openssl\/releases\/download\/OpenSSL_1_1_1w\/openssl-1.1.1w.tar.gz/' Android/build_deps.py
   export ARCH=$this_TargetArch
   export ANDROID_API=$this_TargetAPI
   ./build.sh
