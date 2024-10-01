@@ -149,6 +149,6 @@ mkdir -p build
 cd build
 
 #Build Python
-@New Python Python 3.7.6 https://github.com/GRRedWings/python3-android arm64 21
-cd python3-android
-Python.Clone && Python.Build
+@New Python python 3.7.6 https://github.com/GRRedWings/python3-android arm64 21
+set
+python.Clone && cd python3-android && python.Build
