@@ -1,0 +1,16 @@
+name: Android NDK Build
+ 
+on:
+  workflow_dispatch:
+ 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Android NDK
+      uses: android-actions/ndk-install@v2
+      with:
+        ndkVersion: '21.3.6528147'
