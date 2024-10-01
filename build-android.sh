@@ -141,6 +141,7 @@ InitToolkit
 
  Python::Build () {
   sed -i "s/PYVER=.*/PYVER=$this_PackageVersion/" build.sh
+  sed -i '12,22d' Android/bldlibrary.patch
   export ARCH=$this_TargetArch
   export ANDROID_API=$this_TargetAPI
   ./build.sh
