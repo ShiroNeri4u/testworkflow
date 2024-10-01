@@ -165,7 +165,7 @@ BASICDIR=$PWD
     python -m pip install --upgrade pip
     pip3 install Cython
     mkdir -p $BASICDIR/crosslib
-    pip3 wheel --wheel-dir $BASICDIR/crosslib -r requirements.txt
+    pip3 wheel --wheel-dir $BASICDIR/crosslib -r $BASICDIR/requirements.txt
   }
 
 @DefClass Python : Package
