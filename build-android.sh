@@ -134,6 +134,7 @@ InitToolkit
   }
 
 @DefClass Python : Package
+ @DefMethod Build
  Python::Python () {
   this.Package $@
  }
