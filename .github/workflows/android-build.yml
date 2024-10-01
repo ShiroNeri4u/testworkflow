@@ -18,8 +18,7 @@ jobs:
 
     - name: Setup build environment
       run:
-        sudo apt-get update
-        sudo apt-get install -y build-essential
+        sudo apt update && sudo apt install -y build-essential
     
     - name: Build
       run:
