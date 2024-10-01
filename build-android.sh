@@ -135,6 +135,15 @@ InitToolkit
   }
 
   Package::BuildEnv () {
+    wget https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz
+    tar xvf ffmpeg-7.1.tar.xz
+    cd ffmpeg-7.1
+    export CFLAG="-D__ANDROID_API__=$This_TargetAPI -Os -fPIC -DANDROID "
+    export LDFLAG="-lc -lm -ldl -llog "
+    export PREFIX=/home/runner/work/testworkflow/testworkflow/build/python3-android/src/Python-3.7.6/Android/sysroot/usr
+    ./configure --target-os=android --prefix=$PREFIX --enable-openssl
+    make -j8 && make install
+    cd ..
     pip3 install crossenv
     python3 -m crossenv build/usr/bin/python3 cross_venv
     cd cross_venv/cross/bin
@@ -145,6 +154,7 @@ InitToolkit
     mkdir -p ../../../crosslib
     wget https://raw.githubusercontent.com/LmeSzinc/AzurLaneAutoScript/refs/heads/master/requirements.txt
     pip3 wheel --wheel-dir ../../../crosslib -r requirements.txt
+    tree /home/runner/work/testworkflow/testworkflow/build/
   }
 
 @DefClass Python : Package
