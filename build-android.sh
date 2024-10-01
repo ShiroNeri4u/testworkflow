@@ -140,7 +140,7 @@ InitToolkit
  }
 
  Python::Build () {
-  sed -i "s/PYVER=.*/PYVER=$this_Version/" build.sh
+  eval sed -i "s/PYVER=.*/PYVER=$this_Version/" build.sh
   export ARCH=$this_TargetArch
   export ANDROID_API=$this_TargetAPI
   ./build.sh
