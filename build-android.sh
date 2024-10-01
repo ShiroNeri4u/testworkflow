@@ -5,15 +5,15 @@ function InitToolkit () {
   function @DefClass() {
     DefClass="$1"
     eval _Class_${DefClass}_Attributes=""
-    eval _Class_${DefClass}_Methods="\"${DefClass}::${DefClass}\""
+    eval _Class_${DefClass}_Methods="\"${DefClass}::${DefClass} \""
     eval "${DefClass}::${DefClass} () { return 0; }"
     if [ "$#" = "3" -a "$2" = ":" ]; then
       eval local _ParentAttributes=\$_Class_$3_Attributes
       eval local _Attributes=_Class_${DefClass}_Attributes
-      eval $_Attributes=\"\${$_Attributes} ${_ParentAttributes}\"
+      eval $_Attributes=\"\${$_Attributes}${_ParentAttributes} \"
       eval local _ParentMethods=\$_Class_$3_Methods
       eval local _Methods=_Class_${DefClass}_Methods
-      eval $_Methods=\"\${$_Methods} ${_ParentMethods}\"
+      eval $_Methods=\"\${$_Methods}${_ParentMethods} \"
     fi
   }
 
@@ -135,7 +135,7 @@ InitToolkit
 
 @DefClass Python : Package
  Python::Python () {
-  this.Package $1 $2 $3
+  this.Package $@
  }
 
  Python::Build () {
@@ -149,6 +149,5 @@ mkdir -p build
 cd build
 
 #Build Python
-@New Python python 3.7.6 https://github.com/GRRedWings/python3-android arm64 21
-set
+@New Python python Python 3.7.6 https://github.com/GRRedWings/python3-android arm64 21
 python.Clone && cd python3-android && python.Build
