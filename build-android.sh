@@ -1,0 +1,120 @@
+function InitToolkit () {
+
+  DefClass=""
+
+  function @DefClass() {
+    DefClass="$1"
+    eval _Class_${DefClass}_Attributes=""
+    eval _Class_${DefClass}_Methods="\"${DefClass}::${DefClass}\""
+    eval "${DefClass}::${DefClass} () { return 0; }"
+    if [ "$#" = "3" -a "$2" = ":" ]; then
+      eval local _ParentAttributes=\$_Class_$3_Attributes
+      eval local _Attributes=_Class_${DefClass}_Attributes
+      eval $_Attributes=\"\${$_Attributes} ${_ParentAttributes}\"
+      eval local _ParentMethods=\$_Class_$3_Methods
+      eval local _Methods=_Class_${DefClass}_Methods
+      eval $_Methods=\"\${$_Methods} ${_ParentMethods}\"
+    fi
+  }
+
+  function @DefAttribute () {
+    local _Attributes="_Class_${DefClass}_Attributes"
+    eval $_Attributes=\"\${$_Attributes}$1 \"
+  }
+
+  function @DefMethod () {
+    local _Methods="_Class_${DefClass}_Methods"
+    eval $_Methods=\"\${$_Methods}${DefClass}::$1 \"
+  }
+
+  function _LoadAttributes () {
+    eval local _Attributes=\"\$_Class_${_Class}_Attributes\"
+    local _Attribute
+    for _Attribute in $_Attributes; do
+      eval this_${_Attribute}=\"\$_Instance_${_Instance}_${_Attribute}\"
+    done
+  }
+
+  function _LoadMethods () {
+    eval local _Methods=\"\$_Class_${_Class}_Methods\"
+    local _OriginalMethod
+    for _OriginalMethod in $_Methods; do
+      local _Method=$(_MethodName $_OriginalMethod)
+      eval "this.${_Method} () { ${_OriginalMethod} \"\$@\"; return \$?; }"
+    done
+  }
+
+  function _SaveAttributes () {
+    eval local _Attributes=\"\$_Class_${_Class}_Attributes\"
+    local _Attribute
+    for _Attribute in $_Attributes; do
+      eval _Instance_${_Instance}_${_Attribute}=\"\$this_${_Attribute}\"
+      unset -v this_${_Attribute}
+    done
+  }
+
+  function _ClearMethods () {
+    eval local _Methods=\"\$_Class_${_Class}_Methods\"
+    local _OriginalMethod
+    for _OriginalMethod in $_Methods; do
+      local _Method=$(_MethodName $_OriginalMethod)
+      unset -f this.${_Method}
+    done
+  }
+
+  function _MethodName () {
+    echo $1 | awk -F :: '{print $2}'
+  }
+
+  function @TypeOf () {
+    eval echo \$_TypeOf_$1
+  }
+
+  function @New () {
+    local _instance="$(uuidgen | tr A-F a-f | sed -e "s/-//g")$(date +%s%3N)"
+    local _class=$1
+    local _object=$2
+    shift 2
+    eval _TypeOf_${_instance}=$_class
+    eval ${_object}=$_instance
+    local _originalmethod
+    eval local _methods=\"\$_Class_${_class}_Methods\"
+    for _originalmethod in $_methods; do
+      local _method=$(_MethodName $_originalmethod)
+      eval "${_object}.${_method} () { local _Instance=$_instance; local _Class=$_class; _LoadAttributes; _LoadMethods; ${_originalmethod} \"\$@\"; local rt=\$?; _SaveAttributes; _ClearMethods; return $rt; }"
+    done
+    eval ${_object}.${_class} \"\$@\" || true
+  }
+ 
+  function @Destory () {
+  eval local _instance=\$$1
+  eval local _class=\$_TypeOf_${_instance}
+  eval local _attributes=\$_Class_${_class}_Attributes
+  eval local _methods=\$_Class_${_class}_Methods
+  unset $1
+  unset _TypeOf_${_instance}
+  local _attribute
+  for _attribute in $_attributes; do
+    unset -v Instance_${_instance}_${_attribute}
+  done
+  local _originalmethod
+  for _originalmethod in $_methods; do
+    local method=$(_MethodName $_originalmethod)
+    unset -f $1.$method
+  done
+  }
+
+}
+
+InitToolkit
+
+@DefClass Package
+ @DefAttribute PackageName
+ @DefAttribute PackageVersion
+ @DefAttribute DownloadLink
+
+ Package::Package (){
+  this_PackageName=$1
+  this_PackageVersion=$2
+  this_DownloadLink=$3
+ }
